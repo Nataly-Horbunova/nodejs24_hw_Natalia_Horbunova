@@ -16,15 +16,6 @@ async function isDir(path) {
     }
 }
 
-async function copyFile(sourcePath, targetPath) {
-    try {
-        const fileContent = await fsAsync.readFile(sourcePath, 'utf8');
-        await fsAsync.writeFile(targetPath, fileContent);
-    } catch (error) {
-        logger.error(`Error copying file from ${sourcePath} to ${targetPath}: ${error.message}`);
-    }
-}
-
 async function syncFiles(sourceDir, tragetDir) {
     try{
         const sourceDirFiles = await fsAsync.readdir(sourceDir);
@@ -36,7 +27,11 @@ async function syncFiles(sourceDir, tragetDir) {
     
             if (!await isDir(sourcePath)) {
                 if(!doesExist(file, targetDirFiles)) {
-                    await copyFile(sourcePath, targetPath);
+                    try {
+                        fsAsync.copyFile(sourcePath, targetPath);
+                    } catch (error) {
+                        logger.error(`Error copying file from ${sourcePath} to ${targetPath}: ${error.message}`);
+                    }
                     logger.info(`File ${file} has successfully been created in ${targetPath}`);
                 } else {
                     logger.warn(`File ${file} already exsists`);

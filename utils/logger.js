@@ -3,6 +3,10 @@ const config = require('config');
 const fs = require ('fs');
 const path = require('path');
 
+function getCurrentDate() {
+    return new Date().toISOString();
+}
+
 function shouldLog(...logLevels) {
     const currentlogLevel = config.logLevel;
     return logLevels.some(elem => elem === currentlogLevel);
@@ -22,29 +26,29 @@ try {
     }
 }
 
-const infoWriteStream = fs.createWriteStream(infoFilePath, { flags: 'a' });
-const errorsWriteStream = fs.createWriteStream(errorsFilePath, { flags: 'a' });
+const infoWriteStream = fs.createWriteStream(infoFilePath, { flags: 'a'});
+const errorsWriteStream = fs.createWriteStream(errorsFilePath, { flags: 'a'});
 
 function logger (moduleName) {
     !config.colorsEnabled && disable();
-
+    
     return {
         info: (...args) => {
-            infoWriteStream.write(`${moduleName}: ${args.join(' ')}\n`);
+            infoWriteStream.write(`${getCurrentDate()} ${moduleName}: ${args.join(' ')}\n`);
 
             if (shouldLog('info')) {
                 console.log(bgBlue(`${moduleName}:`), ...args);
             }
         },
         warn: (...args) => {
-            errorsWriteStream.write(`${moduleName}: ${args.join(' ')}\n`);
+            errorsWriteStream.write(`${getCurrentDate()} ${moduleName}: ${args.join(' ')}\n`);
 
             if (shouldLog('info', 'warn')) {
                 console.warn(bgYellow(`${moduleName}:`), ...args);
             }
         },
         error: (...args) => {
-            errorsWriteStream.write(`${moduleName}: ${args.join(' ')}\n`);
+            errorsWriteStream.write(`${getCurrentDate()} ${moduleName}: ${args.join(' ')}\n`);
 
             if(shouldLog('info', 'warn', 'error')) {
                 console.error(bgRed(`${moduleName}:`), ...args);

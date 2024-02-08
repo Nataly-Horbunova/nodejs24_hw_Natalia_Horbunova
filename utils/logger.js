@@ -49,10 +49,7 @@ function logger (moduleName) {
         },
         error: (...args) => {
             errorsWriteStream.write(`${getCurrentDate()} ${moduleName}: ${args.join(' ')}\n`);
-
-            if(shouldLog('info', 'warn', 'error')) {
-                console.error(bgRed(`${moduleName}:`), ...args);
-            }
+            console.error(bgRed(`${moduleName}:`), ...args);
         }
     }
 }

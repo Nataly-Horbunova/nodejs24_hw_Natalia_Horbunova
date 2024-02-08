@@ -12,6 +12,16 @@ const logsDir = path.join('.', 'logs');
 const infoFilePath = path.join(logsDir, 'info.log');
 const errorsFilePath = path.join(logsDir, 'errors.log');
 
+try {
+    fs.accessSync(logsDir);
+} catch (error) {
+    if (error.code === 'ENOENT') {
+        fs.mkdirSync(logsDir, { recursive: true });
+    } else {
+        console.log(`An error occured while trying to acces ${logsDir}: ${error.message}`);
+    }
+}
+
 const infoWriteStream = fs.createWriteStream(infoFilePath, { flags: 'a' });
 const errorsWriteStream = fs.createWriteStream(errorsFilePath, { flags: 'a' });
 

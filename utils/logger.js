@@ -53,4 +53,9 @@ function logger (moduleName) {
     }
 }
 
+process.on('beforeExit', () => {
+    infoWriteStream.end();
+    errorsWriteStream.end();
+})
+
 module.exports = logger;

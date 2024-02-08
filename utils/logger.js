@@ -12,6 +12,14 @@ function shouldLog(...logLevels) {
     return logLevels.some(elem => elem === currentlogLevel);
 }
 
+function logToConsole(color, moduleName, ...args) { 
+    console.log(color(`${moduleName}:`), ...args); 
+}
+
+function logToFile(streamName, moduleName, ...args) { 
+    streamName.write(`${getCurrentDate()} ${moduleName}: ${args.join(' ')}\n`);
+}
+
 const logsDir = path.join('.', 'logs');
 const infoFilePath = path.join(logsDir, 'info.log');
 const errorsFilePath = path.join(logsDir, 'errors.log');
@@ -34,22 +42,16 @@ function logger (moduleName) {
     
     return {
         info: (...args) => {
-            infoWriteStream.write(`${getCurrentDate()} ${moduleName}: ${args.join(' ')}\n`);
-
-            if (shouldLog('info')) {
-                console.log(bgBlue(`${moduleName}:`), ...args);
-            }
+            logToFile(infoWriteStream, moduleName, ...args);
+            shouldLog('info') && logToConsole(bgBlue, moduleName, ...args);
         },
         warn: (...args) => {
-            errorsWriteStream.write(`${getCurrentDate()} ${moduleName}: ${args.join(' ')}\n`);
-
-            if (shouldLog('info', 'warn')) {
-                console.warn(bgYellow(`${moduleName}:`), ...args);
-            }
+            logToFile(errorsWriteStream, moduleName, ...args);
+            shouldLog('info', 'warn') && logToConsole(bgYellow, moduleName, ...args);
         },
         error: (...args) => {
-            errorsWriteStream.write(`${getCurrentDate()} ${moduleName}: ${args.join(' ')}\n`);
-            console.error(bgRed(`${moduleName}:`), ...args);
+            logToFile(errorsWriteStream, moduleName, ...args);
+            logToConsole(bgRed, moduleName, ...args);
         }
     }
 }

@@ -42,7 +42,6 @@ process.on('SIGINT', () => {
     }
 });
 
-
 process.on('beforeExit', () => { 
     try {
         fs.writeFileSync(dataPath, JSON.stringify(users));

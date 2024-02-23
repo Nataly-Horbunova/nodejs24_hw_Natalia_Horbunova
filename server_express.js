@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const { server } = require('config');
-const logger = require('./utils/logger');
 const { router: usersRouter} = require('./routes/users');
 const morgan = require('morgan');
 

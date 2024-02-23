@@ -7,33 +7,39 @@ const {
     deleteUserById
 } = require('../services/userServices');
 
-router.get('/', (req, resp) => {
-    const users = getAllUsers();
+const { validateNewUserData, validateUserId } = require('../middleware/validators')
 
-    resp
-    .json(users);
+router.get('/', (_req, resp) => {
+    const users = getAllUsers();
+    resp.json(users);
 });
 
-router.get('/:userId', (req, resp) => {
+router.get('/:userId', validateUserId, (req, resp) => {
     const user = getUserById(req.params.userId);
 
-    resp
-    .json(user);
+    if(user) {
+        resp.json(user);
+    } else {
+        resp.send(STATUS.NotFound, { error: `User is not found` })
+    }
 });
 
-router.post('/', (req, resp) => {
+router.post('/', validateNewUserData, (req, resp) => {
     const { username, email } = req.body;
-
     addNewUser(username, email);
     resp.send(STATUS.Created);
 });
 
-router.delete('/:userId', (req, resp) => {
+router.delete('/:userId', validateUserId, (req, resp) => {
+    const user = getUserById(req.params.userId);
 
-    deleteUserById(req.params.userId);
-    resp.send(STATUS.NoContent);
+    if(user) {
+        deleteUserById(req.params.userId);
+        resp.send(STATUS.NoContent);
+    } else {
+        resp.send(STATUS.NotFound, { error: `User is not found` });
+    }
 });
-
 
 module.exports = {
     router

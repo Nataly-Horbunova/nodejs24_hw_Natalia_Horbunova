@@ -13,7 +13,6 @@ srv.use(jsonBodyParser);
 
 srv.use(morgan(':method :url :status '));
 
-
 srv.listen(serverPort, () => console.log('Server is running on port ', serverPort));
 
 srv.use('/users', usersRouter);

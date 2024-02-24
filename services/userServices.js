@@ -26,8 +26,9 @@ function addNewUser(username, email){
         username, 
         email
     };
-
     users.push(newUser);
+
+    return newUser;
 }
 
 function deleteUserById(id){

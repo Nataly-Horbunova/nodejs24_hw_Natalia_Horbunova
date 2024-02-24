@@ -26,8 +26,8 @@ router.get('/:userId', validateUserId, (req, resp) => {
 
 router.post('/', validateNewUserData, (req, resp) => {
     const { username, email } = req.body;
-    addNewUser(username, email);
-    resp.send(STATUS.Created);
+    const newUser = addNewUser(username, email);
+    resp.send(STATUS.Created, newUser);
 });
 
 router.delete('/:userId', validateUserId, (req, resp) => {

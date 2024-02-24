@@ -3,12 +3,14 @@ const config = require('config');
 const fs = require ('fs');
 const path = require('path');
 
+const { colorsEnabled, logLevel } = config.logger;
+
 function getCurrentDate() {
     return new Date().toISOString();
 }
 
 function shouldLog(...logLevels) {
-    const currentlogLevel = config.logLevel;
+    const currentlogLevel = logLevel;
     return logLevels.some(elem => elem === currentlogLevel);
 }
 
@@ -17,7 +19,8 @@ function logToConsole(color, moduleName, ...args) {
 }
 
 function logToFile(streamName, moduleName, ...args) { 
-    streamName.write(`${getCurrentDate()} ${moduleName}: ${args.join(' ')}\n`);
+    const formatedArgs = args.map(arg => typeof arg === "object" ? JSON.stringify(arg) : arg);
+    streamName.write(`${getCurrentDate()} ${moduleName}: ${formatedArgs.join(' ')}\n`);
 }
 
 const logsDir = path.join('.', 'logs');
@@ -38,7 +41,8 @@ const infoWriteStream = fs.createWriteStream(infoFilePath, { flags: 'a'});
 const errorsWriteStream = fs.createWriteStream(errorsFilePath, { flags: 'a'});
 
 function logger (moduleName) {
-    !config.colorsEnabled && disable();
+
+    !colorsEnabled && disable();
     
     return {
         info: (...args) => {

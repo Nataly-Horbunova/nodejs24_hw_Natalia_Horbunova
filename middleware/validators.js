@@ -4,7 +4,7 @@ async function validateNewUserData(req, resp, next) {
     let {body} = req;
 
     const userSchema = yup.object({
-        username: yup.string().trim().min(1).required(), 
+        name: yup.string().trim().min(1).required(), 
         email: yup.string().email().trim().required() 
     });
 

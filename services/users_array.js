@@ -18,12 +18,12 @@ function getUserById(id) {
     return users.find(user => user.userId === Number(id));
 }
 
-function addNewUser(username, email){
+function addNewUser(name, email){
     const userId = users[users.length-1].userId + 1;
 
     const newUser = {
         userId, 
-        username, 
+        name, 
         email
     };
     users.push(newUser);

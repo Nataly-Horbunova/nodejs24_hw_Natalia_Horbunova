@@ -11,6 +11,8 @@ try {
 }
 
 function getAllUsers() {
+    console.log('get all in array');
+
     return users;
 }
 

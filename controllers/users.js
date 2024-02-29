@@ -32,10 +32,9 @@ async function addNewUser(req, resp, next){
 }
 
 async function deleteUserById(req, resp, next){
-        const user = await services.getUserById(req.params.userId);
+        const isDeleted = await services.deleteUserById(req.params.userId);
 
-        if(user) {
-            await services.deleteUserById(req.params.userId);
+        if(isDeleted) {
             resp.send(STATUS.NoContent);
         } else {
             resp.send(STATUS.NotFound, { error: `User is not found` });

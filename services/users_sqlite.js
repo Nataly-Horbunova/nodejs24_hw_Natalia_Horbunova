@@ -19,7 +19,7 @@ async function addNewUser(name, email){
 }
 
 async function deleteUserById(id){
-    await knex.delete('*').from('USERS').where({ id });
+    return await knex.delete('*').from('USERS').where({ id });
     }
 
 module.exports = {

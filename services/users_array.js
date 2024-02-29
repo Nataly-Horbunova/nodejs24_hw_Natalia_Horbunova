@@ -32,7 +32,9 @@ function addNewUser(name, email){
 }
 
 function deleteUserById(id){
-    users = users.filter(user => user.userId !== Number(id)); 
+    const initialLength = users.length;
+    users = users.filter(user => user.userId !== Number(id));
+    return initialLength !== users.length;
 }
 
 process.on('SIGINT', () => { 

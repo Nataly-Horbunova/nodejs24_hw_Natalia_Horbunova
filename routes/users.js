@@ -11,9 +11,6 @@ router.post('/', validateNewUserData, controller.addNewUser);
 
 router.delete('/:userId', validateUserId, controller.deleteUserById);
 
-router.delete('/:userId', validateUserId, controller.deleteUserById);
-
-
 module.exports = {
     router
 }

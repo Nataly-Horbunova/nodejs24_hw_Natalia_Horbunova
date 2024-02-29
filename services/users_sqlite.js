@@ -5,7 +5,7 @@ const knex = knexLib(knexConfig);
 
 async function getAllUsers() {
     const users = await knex.select().from('USERS');
-    return  users;
+    return users;
 }
 
 async function getUserById(id) {
@@ -20,7 +20,7 @@ async function addNewUser(name, email){
 
 async function deleteUserById(id){
     await knex.delete('*').from('USERS').where({ id });
-}
+    }
 
 module.exports = {
     getAllUsers,
